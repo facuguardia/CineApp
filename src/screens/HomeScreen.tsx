@@ -1,18 +1,21 @@
-import {useNavigation} from '@react-navigation/core';
 import React from 'react';
-import {Text, View, Button} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
+import {useMovies} from '../hooks/useMovies';
 
 export default function HomeScreen() {
-
-  const navigation = useNavigation();
+  const {peliculasEnCine, isLoading} = useMovies();
 
   return (
     <View>
-      <Text>HomeScreen</Text>
-      <Button
-        title="ir a detalle"
-        onPress={() => navigation.navigate('DetailsScreen')}
-      />
+      {isLoading ? (
+        <View>
+          <ActivityIndicator color="gray" size={80} />
+        </View>
+      ) : (
+        <View>
+          <Text>{peliculasEnCine[2]?.title}</Text>
+        </View>
+      )}
     </View>
   );
 }
