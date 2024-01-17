@@ -1,32 +1,52 @@
 import React from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {ActivityIndicator, Text, View} from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+import {
+  ActivityIndicator,
+  View,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
 
 import {useMovies} from '../hooks/useMovies';
-import MoviePoster from '../components/MoviePoster';
+import {MoviesScrollHorizontal} from '../components/MoviesScrollHorizontal';
+import {MovieCarousel} from '../components/MovieCarousel';
 
 export default function HomeScreen() {
-  const {peliculasEnCine, isLoading} = useMovies();
+  const {
+    isLoading,
+    moviesInTheaters,
+    popularMovies,
+    upcomingReleases,
+    topRated,
+  } = useMovies();
   const {top} = useSafeAreaInsets();
 
+  if (isLoading) {
+    return (
+      <View style={styles.containerSpinner}>
+        <ActivityIndicator color="gray" size={80} />
+      </View>
+    );
+  }
   return (
-    <View>
-      {isLoading ? (
-        <View>
-          <ActivityIndicator color="gray" size={80} />
-        </View>
-      ) : (
-        <View style={{marginTop: top + 20}}>
-          {/* <MoviePoster movie={peliculasEnCine[0]} /> */}
-          <Carousel
-            data={peliculasEnCine}
-            renderItem={({item}: any) => <MoviePoster movie={item} />}
-            sliderWidth={400}
-            itemWidth={300}
-          />
-        </View>
-      )}
-    </View>
+    <ScrollView>
+      <View style={{marginTop: top + 20}}>
+        {/* Peliculas Carousel */}
+        <MovieCarousel movies={moviesInTheaters} />
+
+        {/* Peliculas Cine */}
+        <MoviesScrollHorizontal movies={topRated} title="Top 10" />
+
+        {/* Peliculas Populares */}
+        <MoviesScrollHorizontal movies={popularMovies} title="Populares" />
+
+        {/* Peliculas Proximamente */}
+        <MoviesScrollHorizontal movies={upcomingReleases} title="Proximas" />
+      </View>
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  containerSpinner: {flex: 1, justifyContent: 'center', alignContent: 'center'},
+});
