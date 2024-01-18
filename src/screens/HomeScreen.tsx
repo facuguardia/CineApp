@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {ActivityIndicator, View, ScrollView, StyleSheet} from 'react-native';
+import {ActivityIndicator, View, ScrollView, StyleSheet, Dimensions} from 'react-native';
 
 import {useMovies} from '../hooks/useMovies';
 import {MoviesScrollHorizontal} from '../components/MoviesScrollHorizontal';
-import {MovieCarousel} from '../components/MovieCarousel';
 import BackgroundApp from '../components/BackgroundApp';
+import Carousel from 'react-native-snap-carousel';
+import { getImageColors } from '../helpers/getColors';
+import { GradientContext } from '../context/GradientContext';
+import MoviePoster from '../components/MoviePoster';
+
+const { width: windowWidth } = Dimensions.get('window');
 
 export default function HomeScreen() {
   const {
@@ -16,6 +21,21 @@ export default function HomeScreen() {
     topRated,
   } = useMovies();
   const {top} = useSafeAreaInsets();
+  const {setMainColors} = useContext(GradientContext);
+
+  const getPosterColors = async (index: number) => {
+    const movie = moviesInTheaters[index];
+    const uri = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+
+    const [primary = 'green', secondary = 'orange'] = await getImageColors(uri);
+    setMainColors({primary, secondary});
+  };
+
+  useEffect(() => {
+    if (moviesInTheaters.length > 0) {
+      getPosterColors(0);
+    }
+  }, [moviesInTheaters]);
 
   if (isLoading) {
     return (
@@ -24,12 +44,22 @@ export default function HomeScreen() {
       </View>
     );
   }
+
   return (
-    <BackgroundApp >
+    <BackgroundApp>
       <ScrollView>
         <View style={{marginTop: top + 20}}>
-          {/* Peliculas Carousel */}
-          <MovieCarousel movies={moviesInTheaters} />
+          {/* Carosel Principal */}
+          <View style={{height: 440}}>
+            <Carousel
+              data={moviesInTheaters}
+              renderItem={({item}: any) => <MoviePoster movie={item} />}
+              sliderWidth={windowWidth}
+              itemWidth={300}
+              inactiveSlideOpacity={0.9}
+              onSnapToItem={index => getPosterColors(index)}
+            />
+          </View>
 
           {/* Peliculas Cine */}
           <MoviesScrollHorizontal movies={topRated} title="Top 10" />

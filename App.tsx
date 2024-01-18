@@ -15,7 +15,7 @@ const AppState = ({ children }: any) => {
 
 }
 
-const App = () => {
+function App() {
   return (
     <NavigationContainer>
       <AppState>
