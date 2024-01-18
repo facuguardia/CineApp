@@ -4,7 +4,7 @@ import {ActivityIndicator, View, ScrollView, StyleSheet, Dimensions} from 'react
 
 import {useMovies} from '../hooks/useMovies';
 import {MoviesScrollHorizontal} from '../components/MoviesScrollHorizontal';
-import BackgroundApp from '../components/BackgroundApp';
+import {BackgroundApp} from '../components/BackgroundApp';
 import Carousel from 'react-native-snap-carousel';
 import { getImageColors } from '../helpers/getColors';
 import { GradientContext } from '../context/GradientContext';
