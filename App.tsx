@@ -3,11 +3,26 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {NavigationScreens} from './src/navigation/NavigationScreens';
+import {GradientProvider} from './src/context/GradientContext';
 
-export default function App() {
+const AppState = ({ children }: any) => {
+
+  return (
+    <GradientProvider>
+      { children }
+    </GradientProvider>
+  )
+
+}
+
+const App = () => {
   return (
     <NavigationContainer>
-      <NavigationScreens />
+      <AppState>
+        <NavigationScreens />
+      </AppState>
     </NavigationContainer>
   );
 }
+
+export default App;

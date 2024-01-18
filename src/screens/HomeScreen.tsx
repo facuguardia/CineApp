@@ -1,15 +1,11 @@
 import React from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {
-  ActivityIndicator,
-  View,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import {ActivityIndicator, View, ScrollView, StyleSheet} from 'react-native';
 
 import {useMovies} from '../hooks/useMovies';
 import {MoviesScrollHorizontal} from '../components/MoviesScrollHorizontal';
 import {MovieCarousel} from '../components/MovieCarousel';
+import BackgroundApp from '../components/BackgroundApp';
 
 export default function HomeScreen() {
   const {
@@ -29,24 +25,30 @@ export default function HomeScreen() {
     );
   }
   return (
-    <ScrollView>
-      <View style={{marginTop: top + 20}}>
-        {/* Peliculas Carousel */}
-        <MovieCarousel movies={moviesInTheaters} />
+    <BackgroundApp >
+      <ScrollView>
+        <View style={{marginTop: top + 20}}>
+          {/* Peliculas Carousel */}
+          <MovieCarousel movies={moviesInTheaters} />
 
-        {/* Peliculas Cine */}
-        <MoviesScrollHorizontal movies={topRated} title="Top 10" />
+          {/* Peliculas Cine */}
+          <MoviesScrollHorizontal movies={topRated} title="Top 10" />
 
-        {/* Peliculas Populares */}
-        <MoviesScrollHorizontal movies={popularMovies} title="Populares" />
+          {/* Peliculas Populares */}
+          <MoviesScrollHorizontal movies={popularMovies} title="Populares" />
 
-        {/* Peliculas Proximamente */}
-        <MoviesScrollHorizontal movies={upcomingReleases} title="Proximas" />
-      </View>
-    </ScrollView>
+          {/* Peliculas Proximamente */}
+          <MoviesScrollHorizontal movies={upcomingReleases} title="Proximas" />
+        </View>
+      </ScrollView>
+    </BackgroundApp>
   );
 }
 
 const styles = StyleSheet.create({
-  containerSpinner: {flex: 1, justifyContent: 'center', alignContent: 'center'},
+  containerSpinner: {
+    flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
 });

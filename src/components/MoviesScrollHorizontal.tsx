@@ -29,6 +29,13 @@ export const MoviesScrollHorizontal = ({movies, title}: Props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {height: 260 },
-  title: {fontSize: 30, fontWeight: '700', marginHorizontal: 10, marginBottom: 5},
+  container: {
+    height: 260
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: '700',
+    marginHorizontal: 10,
+    marginBottom: 5,
+  },
 });
