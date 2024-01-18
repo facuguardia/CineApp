@@ -1,24 +1,38 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {RootStackParams} from '../navigation/NavigationScreens';
 import {ScrollView} from 'react-native-gesture-handler';
-import { useMovieDetails } from '../hooks/useMovieDetails';
+import {useMovieDetails} from '../hooks/useMovieDetails';
+import {MovieDetails} from '../components/MovieDetails';
 
 interface Props extends StackScreenProps<RootStackParams, 'DetailsScreen'> {}
 
-export default function DetailsScreen({route}: Props) {
+export default function DetailsScreen({route, navigation}: Props) {
   const movie = route.params;
   const uri = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
 
-  useMovieDetails(movie.id);
+  const {isLoading, movieFull, cast} = useMovieDetails(movie.id);
 
   return (
     <ScrollView>
       <View style={styles.imageContainer}>
+        {/* Boton volver */}
         <Image source={{uri}} style={styles.image} />
+        <View style={styles.buttonBack}>
+          <TouchableOpacity onPress={() => navigation.pop()}>
+            <Icon name="arrow-back-outline" color="white" size={30} />
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.container}>
         {/* Título original */}
@@ -27,24 +41,12 @@ export default function DetailsScreen({route}: Props) {
         {/* Título */}
         <Text style={styles.titleMovie}>{movie.title}</Text>
 
-        {/* Puntaje y Género */}
-        <Text style={styles.scoreAndGender}>
-          <Icon
-            name="star-outline"
-            color="grey"
-            size={ 15 }
-          />
-          {movie.vote_average} - {movie.vote_count}
-        </Text>
-
-        {/* Descripción */}
-        <Text style={styles.titleSections}>Historia</Text>
-        <Text style={styles.description}>{movie.overview}</Text>
-
-        {/* Casting */}
-        <Text style={styles.titleSections}>Actores</Text>
-        {/* <Image /> */}
-
+        {/* Detalle */}
+        {isLoading ? (
+          <ActivityIndicator color="grey" size={35} />
+        ) : (
+          <MovieDetails movieFull={movieFull!} cast={cast} />
+        )}
       </View>
     </ScrollView>
   );
@@ -54,6 +56,23 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 20,
     marginHorizontal: 15,
+  },
+  buttonBack: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    padding: 5,
+    borderRadius: 100,
+    backgroundColor: 'gray',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.9,
+    shadowRadius: 3.84,
+
+    elevation: 10,
   },
   imageContainer: {
     width: '100%',
@@ -84,19 +103,5 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     color: 'black',
-  },
-  scoreAndGender: {
-    fontSize: 13,
-    fontWeight: 'normal',
-  },
-  titleSections: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'black',
-    marginTop: 10,
-  },
-  description: {
-    fontSize: 15,
-    fontWeight: 'bold',
   },
 });
