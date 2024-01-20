@@ -60,5 +60,6 @@ const styles = StyleSheet.create({
   castingCharacter: {
     fontSize: 12,
     fontWeight: 'normal',
+    color: 'gray',
   },
 });

@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
   titleOriginal: {
     fontSize: 13,
     fontWeight: 'normal',
+    color: 'gray',
   },
   titleMovie: {
     fontSize: 28,

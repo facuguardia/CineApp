@@ -15,8 +15,8 @@ export const MovieDetails = ({movieFull, cast}: Props) => {
       {/* Score & Gender */}
       <View style={styles.scoreDetails}>
         <Icon name="star-outline" size={16} color="grey" />
-        <Text>{movieFull.vote_average.toString().slice(0, 3)}</Text>
-        <Text>- {movieFull.genres.map(g => g.name).join(', ')}</Text>
+        <Text style={styles.scoreDetailsTitle}>{movieFull.vote_average.toString().slice(0, 3)}</Text>
+        <Text style={styles.scoreDetailsTitle}>- {movieFull.genres.map(g => g.name).join(', ')}</Text>
       </View>
       {/* Descripción */}
       <Text style={styles.titleSections}>Historia</Text>
@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
     gap: 5,
   },
+  scoreDetailsTitle: {
+    color: 'gray',
+  },
   titleSections: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -54,6 +57,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 15,
     fontWeight: 'bold',
+    color: 'gray',
     marginTop: 5,
   },
 });
