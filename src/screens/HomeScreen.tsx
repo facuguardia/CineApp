@@ -48,7 +48,7 @@ export default function HomeScreen() {
   return (
     <BackgroundApp>
       <ScrollView>
-        <View style={{marginTop: top + 20}}>
+        <View style={{marginTop: top + 30}}>
           {/* Carosel Principal */}
           <View style={{height: 440}}>
             <Carousel
